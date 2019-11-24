@@ -1,0 +1,22 @@
+<div class=form-padding>
+<h1>Login</h1>
+{{#if error}} <span>{{error}}</span>{{/if}}
+<form action="/login" method="post">
+	<!--<img src="img_avatar2.png" alt="Avatar" class="avatar">-->
+	<div class="container">
+		<div>
+			<label for="email">Email</label>
+			<input type="email" id="email" name="email" required>
+		</div>
+
+		<div>
+			<label for="password">Password</label>
+			<input type="password" id="password" name="password" required>
+		</div>
+	</div>
+
+	<div class="form-button-outer">
+  		<button class="inline-button" type="submit">Login</button>
+  		<a class="inline-button button cancelbtn" href="/register">Go to register</a>
+  	</div>
+</form>

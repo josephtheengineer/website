@@ -1,2 +1,3 @@
 treatmentjournal/backend/.env
 treatmentjournal/backend/node_modules
+treatmentjournal/backend/redis
