@@ -1,0 +1,96 @@
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+{{#if error}} <span>{{error}}</span>{{/if}}
+
+<script>
+	window.onload = function loadVars() {
+		document.getElementById('date').value="{{date}}"
+	}
+
+</script>
+
+<form>
+	<h1>Intake Form</h1>
+
+	<h1> Personal details </h1>
+	<div>
+		<label for="name">Full name</label>
+		<input type="text" id="name" name="name" required>
+	</div>
+
+	<div>
+		<label for="address">Address</label>
+		<input type="text" id="address" name="address" required>
+	</div>
+
+
+	<h1>Contact details</h1>
+	<div>
+		<label for="home-phone">Home phone</label>
+		<input type="text" id="home-phone" name="home-phone" required>
+	</div>
+
+	<div>
+		<label for="mobile-phone">Mobile phone</label>
+		<input type="text" id="mobile-phone" name="mobile-phone" required>
+	</div>
+
+	<div>
+		<label for="work-phone">Work phone</label>
+		<input type="text" id="work-phone" name="work-phone" required>
+	</div>
+
+	<div>
+		<label for="email">Email</label>
+		<input type="text" id="email" name="email" required>
+	</div>
+
+	<div>
+		<label for="birth">Date of birth</label>
+		<input type="text" id="birth" name="birth" required>
+	</div>
+
+	<div>
+		<label for="children">Number of children</label>
+		<input type="text" id="children" name="children" required>
+	</div>
+
+	<div>
+		<label for="partner">Partners name</label>
+		<input type="text" id="partner" name="partner" required>
+	</div>
+
+
+	<div>
+		<label for="occupation">Occupation</label>
+		<input type="text" id="occupation" name="occupation" required>
+	</div>
+
+	<div>
+		<label for="accounts-name">Person responsible for accounts</label>
+		<input type="text" id="accounts-name" name="accounts-name" required>
+	</div>
+
+
+	<div>
+		<label for="health-fund">Health fund</label>
+		<input type="text" id="health-fund" name="health-fund" required>
+	</div>
+
+	<h1>Referral Details</h1>
+
+	<div>
+		<label for="referrer">Who can we thank for referring you to us?</label>
+		<input type="text" id="referrer" name="referrer" required>
+	</div>
+
+
+
+	<div class="form-button-outer">
+	 	<button class="button2" type="submit">Done</button>
+		<a class="button2 button cancelbtn" href="/login">Cancel</a>
+	</div>
+
+</form>
+</body>
+</html>

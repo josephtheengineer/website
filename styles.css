@@ -10,10 +10,16 @@ body {
 	background-color: #070e11;
 }
 
-p, img, label, input, li, span {
+p, img, label, li, span {
 	color: #44525d;
 	font-size: 12px;
 	/*font-family: 'Dosis', sans-serif;*/
+	font-family: 'Roboto', sans-serif;
+}
+
+input {
+	color: white;
+	font-size: 12px;
 	font-family: 'Roboto', sans-serif;
 }
 

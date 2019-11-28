@@ -278,6 +278,59 @@ app.post('/searchusers', function(req, res, next){
 	})
 })
 
+app.get('/dashboard', function(req, res, next){
+	res.render('dashboard')
+})
+
+app.get('/notes', function(req, res, next){
+	res.render('notes', {
+		layout: 'notes',
+		date: getHumanDate(),
+		notes_template: req.query.template
+	})
+})
+
+app.get('/notes/intake', function(req, res, next){
+	res.render('notes/intake', {
+		layout: 'notes',
+		date: getHumanDate(),
+		notes_template: req.query.template
+	})
+})
+
+
+app.get('/notes/soap', function(req, res, next){
+	res.render('notes/soap', {
+		layout: 'notes',
+		date: getHumanDate(),
+		notes_template: req.query.template
+	})
+})
+
+function getHumanDate(){
+	var dateObj = new Date();
+	var month = dateObj.getUTCMonth() + 1; //months from 1-12
+	var day = dateObj.getUTCDate();
+	var year = dateObj.getUTCFullYear();
+
+	console.log(year + "-" + month + "-" + day)
+	return year + "-" + month + "-" + day;
+}
+
+app.post('/notes', async (req, res) => {
+	try {
+		const date = encodeURIComponent(req.body.date)
+		const template = encodeURIComponent(req.body.template)
+		const title = encodeURIComponent(req.body.title)
+
+		res.redirect('/notes/' + template + '?date='+date + '&template='+template + '&title='+title);
+
+	} catch (e) {
+		console.log(e)
+		res.redirect('/')
+	}
+})
+
 app.listen(port, function(){
 	console.log('Server started on port '+port)
 })
