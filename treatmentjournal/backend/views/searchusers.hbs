@@ -20,6 +20,9 @@
 		<span class="white">Client?: </span>{{user.client}}</li>
 		<li><span class="white">Password: </span>{{user.password}}</li>
 	</ul>
+	<form method="POST" action="/deleteuser/{{user.id}}?_method=DELETE">
+	<button class="button2" type="submit">Delete</button>
+	</form>
 </div>
 <a href="/">Back</a>
 </div>

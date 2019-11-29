@@ -135,7 +135,7 @@ passport.deserializeUser(function(id, cb) {
 // allows the use of DELETE method in forms
 app.use(methodOverride('_method'))
 
-app.get('/', (req, res) => {
+app.get('/', checkAuthenticated, (req, res) => {
 	res.render('index', {
 		name: req.user.email
 	})
@@ -143,11 +143,11 @@ app.get('/', (req, res) => {
 
 
 
-app.get('/login', (req, res) => {
+app.get('/login', checkNotAuthenticated, (req, res) => {
 	res.render('login')
 })
 
-app.post('/login', passport.authenticate('local', {
+app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 	successRedirect: '/',
 	failureRedirect: '/login',
 	failureFlash: true
@@ -155,14 +155,14 @@ app.post('/login', passport.authenticate('local', {
 
 
 
-app.get('/register', (req, res) => {
+app.get('/register', checkNotAuthenticated, (req, res) => {
 	res.render('register')
 })
 
-app.post('/register', async (req, res) => {
+app.post('/register', checkNotAuthenticated, async (req, res) => {
 	try {
 		const userId = Date.now().toString()
-		const userString = user + userId
+		const userString = 'user:' + userId
 		const name = req.body.name
 		const email = req.body.email
 		const hashedPassword = await bcrypt.hash(req.body.password, 10)
@@ -172,67 +172,61 @@ app.post('/register', async (req, res) => {
 		var middleName = ""
 		var lastName = ""
 
-		switch(fullName.length) {
-			case 1:
-				firstName = fullName
+		if (fullName.length == 1) {
+			firstName = fullName
 
-				client.hset(userString, [
-					'id', userId,
-					'name', name,
-					'first_name', firstName,
-					'email', email,
-					'password', hashedPassword
-				], function(err, reply) {
-					if(error) {
-						console.log(err)
-					}
-					console.log(reply)
-				})
+			client.hset(userString, [
+				'id', userId,
+				'name', name,
+				'first_name', firstName,
+				'email', email,
+				'password', hashedPassword
+			], function(err, reply) {
+				if(error) {
+					console.log(err)
+				}
+				console.log(reply)
+			})
 
-				break
-			case 2:
-				firstName = fullName.slice(0).join(' ')
-				lastName = fullName.slice(-1).join(' ')
+		} if else (fullName.length == 2) {
+			firstName = fullName.replace(/ .*/,'')
+			lastName = fullName.slice(-1).join(' ')
 
+			client.hset(userString, [
+				'id', userId,
+				'name', name,
+				'first_name', firstName,
+				'last_name', lastName,
+				'email', email,
+				'password', hashedPassword
+			], function(err, reply) {
+				if(err) {
+					console.log(err)
+				}
+				console.log(reply)
+			})
 
-				client.hset(userString, [
-					'id', userId,
-					'name', name,
-					'first_name', firstName,
-					'last_name', lastName,
-					'email', email,
-					'password', hashedPassword
-				], function(err, reply) {
-					if(err) {
-						console.log(err)
-					}
-					console.log(reply)
-				})
+		} if else (fullName.length >= 3) {
+			firstName = fullName.replace(/ .*/,'')
+			middleName = fullName.slice(1).join(' ')
+			lastName = fullName.slice(-1).join(' ')
 
-				break
-			case 3:
-				firstName = fullName.slice(0).join(' ')
-				middleName = fullName.slice(1).join(' ')
-				lastName = fullName.slice(-1).join(' ')
-
-				client.hset(userString, [
-					'id', userId,
-					'name', name,
-					'first_name', firstName,
-					'middle_name', middleName,
-					'last_name', lastName,
-					'email', email,
-					'password', hashedPassword
-				], function(err, reply) {
-					if(err) {
-						console.log(err)
-					}
-					console.log(reply)
-				})
-
-				break
-			default:
-				console.log('Error fullName.length invalid')
+			client.hset(userString, [
+				'id', userId,
+				'name', name,
+				'first_name', firstName,
+				'middle_name', middleName,
+				'last_name', lastName,
+				'email', email,
+				'password', hashedPassword
+			], function(err, reply) {
+				if(err) {
+					console.log(err)
+				}
+				console.log(reply)
+			})
+		} else {
+			console.log('Error fullName.length invalid')
 		}
 
 		client.set('user:' + email, userId,
@@ -276,6 +270,22 @@ app.post('/searchusers', function(req, res, next){
 			})
 		}
 	})
+})
+
+app.delete('/deleteuser/:id', function(req, res, next){
+	client.hgetall(req.params.id, function(err, obj){
+		if(!obj){
+			res.render('searchusers', {
+				error: 'user does not exist'
+			})
+		} else {
+			client.del('user:' + obj.email)
+			res.render('searchusers', {
+				error: req.params.id + ' deleted'
+			})
+		}
+	})
+	client.del(req.params.id)
 })
 
 app.get('/dashboard', function(req, res, next){
@@ -330,6 +340,22 @@ app.post('/notes', async (req, res) => {
 		res.redirect('/')
 	}
 })
+
+function checkAuthenticated(req, res, next) {
+	if (req.isAuthenticated()) {
+		return next()
+	}
+
+	res.redirect('/login')
+}
+
+
+function checkNotAuthenticated(req, res, next) {
+	if (req.isAuthenticated()) {
+		return res.redirect('/')
+	}
+	next()
+}
 
 app.listen(port, function(){
 	console.log('Server started on port '+port)
