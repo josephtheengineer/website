@@ -188,7 +188,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
 				console.log(reply)
 			})
 
-		} if else (fullName.length == 2) {
+		} else if (fullName.length == 2) {
 			firstName = fullName.replace(/ .*/,'')
 			lastName = fullName.slice(-1).join(' ')
 
@@ -206,7 +206,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
 				console.log(reply)
 			})
 
-		} if else (fullName.length >= 3) {
+		} else if (fullName.length >= 3) {
 			firstName = fullName.replace(/ .*/,'')
 			middleName = fullName.slice(1).join(' ')
 			lastName = fullName.slice(-1).join(' ')
