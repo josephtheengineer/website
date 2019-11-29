@@ -173,7 +173,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
 		var lastName = ""
 
 		if (fullName.length == 1) {
-			firstName = fullName
+			firstName = fullName[0]
 
 			client.hset(userString, [
 				'id', userId,
@@ -189,8 +189,8 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
 			})
 
 		} else if (fullName.length == 2) {
-			firstName = fullName.replace(/ .*/,'')
-			lastName = fullName.slice(-1).join(' ')
+			firstName = fullName[0]
+			lastName = fullName[1]
 
 			client.hset(userString, [
 				'id', userId,
@@ -207,9 +207,9 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
 			})
 
 		} else if (fullName.length >= 3) {
-			firstName = fullName.replace(/ .*/,'')
-			middleName = fullName.slice(1).join(' ')
-			lastName = fullName.slice(-1).join(' ')
+			firstName = fullName[0]
+			middleName = fullName[1]
+			lastName = fullName[2]
 
 			client.hset(userString, [
 				'id', userId,
