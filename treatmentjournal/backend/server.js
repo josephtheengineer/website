@@ -136,15 +136,19 @@ passport.deserializeUser(function(id, cb) {
 app.use(methodOverride('_method'))
 
 app.get('/', checkAuthenticated, (req, res) => {
-	res.render('index', {
-		name: req.user.email
+	res.render('dashboard', {
+		title: 'Notes!',
+		name: req.user.first_name
 	})
 })
 
 
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
-	res.render('login')
+	res.render('login', {
+		title: 'Login - Notes!',
+		layout: 'no-nav'
+	})
 })
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
@@ -156,7 +160,9 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 
 
 app.get('/register', checkNotAuthenticated, (req, res) => {
-	res.render('register')
+	res.render('register', {
+		title: 'Register - Notes!'
+	})
 })
 
 app.post('/register', checkNotAuthenticated, async (req, res) => {
@@ -251,11 +257,13 @@ app.delete('/logout', (req, res) => {
 	res.redirect('/login')
 })
 
-app.get('/searchusers', function(req, res, next){
-	res.render('searchusers')
+app.get('/searchusers', checkAuthenticated, function(req, res, next){
+	res.render('searchusers', {
+		title: 'Search Users - Notes!'
+	})
 })
 
-app.post('/searchusers', function(req, res, next){
+app.post('/searchusers', checkAuthenticated, function(req, res, next){
 	let id = req.body.id
 
 	client.hgetall(id, function(err, obj){
@@ -272,7 +280,7 @@ app.post('/searchusers', function(req, res, next){
 	})
 })
 
-app.delete('/deleteuser/:id', function(req, res, next){
+app.delete('/deleteuser/:id', checkAuthenticated, function(req, res, next){
 	client.hgetall(req.params.id, function(err, obj){
 		if(!obj){
 			res.render('searchusers', {
@@ -288,21 +296,24 @@ app.delete('/deleteuser/:id', function(req, res, next){
 	client.del(req.params.id)
 })
 
-app.get('/dashboard', function(req, res, next){
-	res.render('dashboard')
+app.get('/profile', checkAuthenticated, function(req, res, next){
+	res.render('profile', {
+		title: 'Your Settings - Notes!',
+		name: req.user.name
+	})
 })
 
-app.get('/notes', function(req, res, next){
+app.get('/notes', checkAuthenticated, function(req, res, next){
 	res.render('notes', {
-		layout: 'notes',
+		title: 'New - Notes!',
 		date: getHumanDate(),
 		notes_template: req.query.template
 	})
 })
 
-app.get('/notes/intake', function(req, res, next){
+app.get('/notes/intake', checkAuthenticated, function(req, res, next){
 	res.render('notes/intake', {
-		layout: 'notes',
+		title: 'Intake Form - Notes!',
 		date: getHumanDate(),
 		notes_template: req.query.template
 	})
@@ -311,7 +322,7 @@ app.get('/notes/intake', function(req, res, next){
 
 app.get('/notes/soap', function(req, res, next){
 	res.render('notes/soap', {
-		layout: 'notes',
+		title: 'SOAP - Notes!',
 		date: getHumanDate(),
 		notes_template: req.query.template
 	})

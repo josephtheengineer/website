@@ -1,5 +1,60 @@
+<script>
+//	const searchBar = document.forms['search'].querySelector('input')
+//	searchBar.addEventListener('keyup', function(e) {
+//		const term = e.target.value.toLowerCase()
+//		const clients = list.getElementsByTagName('li')
+//		Array.from(clients).forEach(function(client){
+//			const title = client.firstElementChild.textContent
+//			if(title.toLowerCase().indexOf(term) != -1){
+//				book.style.display = 'block'
+//			} else {
+//				book.style.display = 'none'
+//			}
+//		})
+//	})
+
+	window.onload = function loadClients() {
+		const array = ["one", "two", "three"]
+		array.forEach(function (item, index) {
+			addClient(item, index)
+		})
+	}
+
+	function addClient(name, id) {
+		document.querySelector('#clients').insertAdjacentHTML(
+			'afterbegin',
+			`<div><form action="/change-client?`+id+`" method="POST">
+				<button type="submit">
+					`+name+`
+				</button>
+			</form></div>`
+		)
+	}
+</script>
+
 <div>
+	<h1 style="float: left; margin-top: 15px; margin-right: 20px;">Clients:</h1>
+	<form style="float: left; width: 30%; margin-right: 20px;" id="search">
+		<input type="text" placeholder="Search">
+	</form>
+	<form action="/newclient" method="POST">
+		<button style="height: 42px;" type="submit">
+			New Client
+		</button>
+	</form>
 </div>
-<div>
-	<h1> Notes </h1> <a href="">Edit</a>
+
+<br>
+<br>
+<br>
+<br>
+
+<div id="clients">
 </div>
+
+
+<button onclick="addClient()">Test</button>
+
+<!-- <form action="/logout?_method=DELETE" method="POST">
+	<button type="submit">Log Out</button>
+</form> -->
