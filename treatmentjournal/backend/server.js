@@ -92,7 +92,7 @@ global.checkAuthenticated = function(req, res, next) {
 		return next()
 	}
 
-	res.redirect('/login')
+	res.redirect('/users/login')
 }
 
 global.checkNotAuthenticated = function(req, res, next) {

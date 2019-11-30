@@ -1,7 +1,7 @@
 <div class=form-padding>
 <h1>Login to Notes!</h1>
 {{#if error}} <span>{{error}}</span>{{/if}}
-<form action="/login" method="post">
+<form action="/users/login" method="post">
 	<!--<img src="img_avatar2.png" alt="Avatar" class="avatar">-->
 	<div class="container">
 		<div>
@@ -17,6 +17,6 @@
 
 	<div class="form-button-outer">
   		<button class="button2" type="submit">Login</button>
-  		<a class="button2 button cancelbtn" href="/register">Go to register</a>
+  		<a class="button2 button cancelbtn" href="/users/register">Go to register</a>
   	</div>
 </form>
