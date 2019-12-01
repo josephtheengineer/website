@@ -76,7 +76,10 @@ app.post('/intake', checkAuthenticated, function(req, res, next){
 		data.push('home_phone', req.body.home-phone)
 		data.push('mobile_phone', req.body.mobile-phone)
 		data.push('work_phone', req.body.work-phone)
-		data.push('email', req.body.email)
+
+		const email = req.body.email
+		data.push('email', email)
+
 		data.push('birth', req.body.birth)
 		data.push('children', req.body.children)
 		data.push('partner', req.body.partner)
@@ -86,14 +89,40 @@ app.post('/intake', checkAuthenticated, function(req, res, next){
 
 		// referral details
 		data.push('referrer', req.body.referrer)
-		//data.push('', ) RADIO BUTTON TODO
+		data.push('referrer_yellow_pages', req.body.referrer-yellow-pages)
+		data.push('referrer_sign', req.body.referrer-sign)
+		data.push('referrer_health_fund', req.body.referrer-health-fund)
+		data.push('referrer_acupuncture_association', req.body.referrer-acupuncture-association)
+		data.push('referrer_health_care', req.body.referrer-health-care)
+		data.push('referrer_voucher', req.body.referrer-voucher)
+		data.push('referrer_paper', req.body.referrer-paper)
 		data.push('first_visit', req.body.first-visit)
 
 		// accidents or injuries
+		data.push('injuries', req.body.injuries)
+		data.push('doctor', req.body.doctor)
+		data.push('doctor_phone', req.body.doctor-phone)
 
 		// health details
+		data.push('med_pain', req.body.med-pain)
+		data.push('med_muscle_relaxants', req.body.med-muscle-relaxants)
+		data.push('med_anti_infamantory', req.body.med-anti-infamantory)
+		data.push('med_birth_control', req.body.med-birth-control)
+		data.push('med_pressure', req.body.med-pressure)
+		data.push('med_vitamins', req.body.med-vitamins)
+		data.push('med_other', req.body.med-other)
+		data.push('operations', req.body.operations)
+		data.push('pregnant', req.body.pregnant)
 
-		client.hset(user, data,
+		// Part 1 Create Client
+
+
+
+		client.hset(user, [
+			'id', id,
+			'first_name', firstName,
+			'email', email
+		]
 		function(err, reply) {
 			if(err) {
 				console.log(err)
